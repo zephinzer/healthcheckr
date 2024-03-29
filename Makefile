@@ -74,12 +74,13 @@ binary: docs
 	@go build \
 		-ldflags "\
 			-extldflags 'static' -s -w \
-			-X ${APP_NAME}/internal/constants.AppName=${APP_NAME} \
-			-X ${APP_NAME}/internal/constants.BuildTimestamp=$$(date --utc +'%Y-%m-%dT%H:%M:%S') \
-			-X ${APP_NAME}/internal/constants.Version=$$(git rev-parse --abbrev-ref HEAD)-$$(git rev-parse HEAD | head -c 6) \
+			-X ${APP_NAME}/internal/common.AppName=${APP_NAME} \
+			-X ${APP_NAME}/internal/common.BuildTimestamp=$$(date --utc +'%Y-%m-%dT%H:%M:%S') \
+			-X ${APP_NAME}/internal/common.Version=$$(git rev-parse --abbrev-ref HEAD)-$$(git rev-parse HEAD | head -c 6) \
 		" \
 		-o "${BIN_PATH}/${APP_NAME}${BINARY_EXT}" \
-		"${CMD_PATH}/${APP_NAME}"
+		.
+	@chmod +x "${BIN_PATH}/${APP_NAME}${BINARY_EXT}"
 	@cp "${BIN_PATH}/${APP_NAME}${BINARY_EXT}" "${BIN_PATH}/${APP_NAME}_$$(go env GOOS)_$$(go env GOARCH)${BINARY_EXT}"
 
 deps:

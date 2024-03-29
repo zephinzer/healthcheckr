@@ -3,6 +3,7 @@ package http
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -16,7 +17,13 @@ const (
 var Command = cobra.Command{
 	Use:     "http",
 	Aliases: []string{"server", "h"},
-	RunE:    runE,
+	Short:   "Starts a utility HTTP server for running checks against",
+	Long: strings.Trim(`
+Starts a utility HTTP server that returns 200 or 500 on the / endpoint
+depending on the mode of operations which can be toggled by triggering
+a request to the /mode endpoint.
+`, "\n "),
+	RunE: runE,
 }
 
 func GetCommand() *cobra.Command {
@@ -44,7 +51,10 @@ func runE(command *cobra.Command, args []string) error {
 		w.Write([]byte("ok"))
 	})
 
-	logrus.Infof("starting server on 0.0.0.0:8080")
-	http.ListenAndServe("0.0.0.0:8080", mux)
+	serverAddr := "0.0.0.0:8080"
+	logrus.Infof("starting server on %s", serverAddr)
+	if err := http.ListenAndServe(serverAddr, mux); err != nil {
+		return fmt.Errorf("failed to start server: %s", err)
+	}
 	return nil
 }

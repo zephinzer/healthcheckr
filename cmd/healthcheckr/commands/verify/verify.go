@@ -9,6 +9,7 @@ import (
 var Command = cobra.Command{
 	Use:     "verify",
 	Aliases: []string{"check", "v", "c"},
+	Short:   "Verifies different types of checks",
 	RunE:    runE,
 }
 

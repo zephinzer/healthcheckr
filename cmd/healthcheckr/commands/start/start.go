@@ -9,6 +9,7 @@ import (
 var Command = cobra.Command{
 	Use:     "start",
 	Aliases: []string{"s", "run"},
+	Short:   "Starts long-running processes",
 	RunE:    runE,
 }
 

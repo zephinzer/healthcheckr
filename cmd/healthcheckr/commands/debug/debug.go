@@ -10,7 +10,7 @@ import (
 var Command = cobra.Command{
 	Use:     "debug",
 	Aliases: []string{"dbg", "d"},
-	Short:   "Debugging utilities",
+	Short:   "Debug/utilities invocations",
 	RunE:    runE,
 }
 
