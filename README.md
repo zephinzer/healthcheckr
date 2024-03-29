@@ -9,9 +9,11 @@
       - [Channel type configuration](#channel-type-configuration)
   - [Debug mode](#debug-mode)
     - [Telegram chat ID retrieval](#telegram-chat-id-retrieval)
+    - [Utility HTTP server](#utility-http-server)
 - [Development](#development)
   - [Getting started](#getting-started)
   - [Executing via `go`](#executing-via-go)
+- [License](#license)
 
 # Usage
 
@@ -173,6 +175,29 @@ To use a Telegram channel for alerting:
     # ... other properties ...
     ```
 
+### Utility HTTP server
+
+A debug/utility HTTP server is included as part of the tool. To execute it, run:
+
+```sh
+healthcheckr debug http;
+```
+
+A server should start on port `8080`. This server returns either a `200` or `500` status code depending on whether the failure mode is turned on. To switch the mode, do a `curl` to the `/mode` endpoint:
+
+```sh
+curl localhost:8080/mode;
+```
+
+You should observe one of the following logs:
+
+```sh
+INFO[3886] fail mode toggled, / will now return 500
+INFO[3931] fail mode toggled, / will now return 200
+```
+
+The configuration file at [`./examples/config-local.yaml`](./examples/config-local.yaml) uses this endpoint and can be used to verify the notification workflow.
+
 # Development
 
 ## Getting started
@@ -183,7 +208,10 @@ Run the following to do a smoke test on Google:
 go run . verify http;
 ```
 
-To test the worker mode, you'll need to create a Telegram bot and a Slack webhook.
+To test the worker mode locally, you'll need to:
+1. Create a Telegram bot (ask @BotFather)
+2. Create a Slack webhook (add the app in Slack)
+3. Start the utility HTTP server (instructions above)
 
 Then create a `.envrc` file and define the following:
 
@@ -196,10 +224,19 @@ export SLACK_WEBHOOK_URL=xxx
 And then run:
 
 ```sh
-go run . start worker -c ./examples/config.yaml;
+go run . start worker -c ./examples/config-local.yaml;
 ```
 
+You can toggle the mode of the utility HTTP server to observe the notifications workflow:
+
+```sh
+curl localhost:8080/mode;
+```
 
 ## Executing via `go`
 
 To execute locally without compiling, replace all `healthcheckr` invocations with `go run .`
+
+# License
+
+This tool is licensed under the permissive MIT license.
