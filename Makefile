@@ -4,7 +4,7 @@
 ## set this to the namespace of your app or organisation
 ## of your app, this is used for build artifacts, not the
 ## deployment
-APP_NAMESPACE := healthcheckr
+APP_NAMESPACE := watchtowr
 
 ## set this to the universal identifier of your app
 APP_NAME := healthcheckr
@@ -27,9 +27,6 @@ HELM_CHARTS_PATH := ./deploy/charts
 ## this is the hostname of the image registry where your built image will
 ## be published to
 IMAGE_REGISTRY := docker.io
-
-## this is the rest of the path of the image
-IMAGE_PATH := ${APP_NAMESPACE}/${APP_NAME}
 
 ## this is the image tag, set this to something like the version or some
 ## identifier of the version of your application
@@ -54,6 +51,7 @@ SWAGGO_URL := github.com/swaggo/swag
 
 HELM_CHART_PATH := ${HELM_CHARTS_PATH}/${APP_NAME}
 HELM_RELEASE_NAME := $(APP_NAME)
+IMAGE_PATH := ${APP_NAMESPACE}/${APP_NAME}
 IMAGE_URL := ${IMAGE_REGISTRY}/${IMAGE_PATH}
 KAFKA_CA_KEY_PATH := ${KAFKA_CERTS_PATH}/ca-key
 KAFKA_CA_CERT_PATH := ${KAFKA_CERTS_PATH}/ca-cert
