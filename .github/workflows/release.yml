@@ -44,6 +44,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   release:
+    # ref https://github.com/helm/chart-releaser-action
     name: Release as Helm chart
     needs: build
     permissions:
@@ -56,8 +57,8 @@ jobs:
           fetch-depth: 0
       - name: Configure Git
         run: |
-          git config user.name "${GH_USERNAME}"
-          git config user.email "${GH_USER_ID}-${GH_USERNAME}@users.noreply.github.com"
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR_ID}-${GITHUB_ACTOR}@users.noreply.github.com"
       - name: Install Helm
         uses: azure/setup-helm@v4
         env:
